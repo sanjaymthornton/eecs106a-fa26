@@ -14,6 +14,13 @@ The assignment handout provides the full problem statement and any additional su
 ## One-time setup
 
 1. On GitHub, create an **empty private repository** named `eecs106a-fa26`. Do not initialize it with a README, license, or `.gitignore`.
+
+   **Note**: When creating the repository, set its visibility to private. If
+   you accidentally create it as public, open the repository's **Settings**,
+   select **General**, scroll down to **Danger Zone**, choose **Change
+   repository visibility**, select **Change to private**, and complete the
+   confirmation steps.
+
 2. Clone this staff repository once:
 
    ```bash
