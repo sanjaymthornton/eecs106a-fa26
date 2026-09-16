@@ -246,7 +246,7 @@ def twist_to_SE3(xi, theta=1):
     omega = xi[3:6]
     omega_hat = R3_to_so3(omega)
 
-    if np.linalg.norm(omega) == 0:
+    if np.linalg.norm(omega) < 1e-12:
         return np.array([[1, 0, 0, v_theta[0]],
                          [0, 1, 0, v_theta[1]],
                          [0, 0, 1, v_theta[2]],
