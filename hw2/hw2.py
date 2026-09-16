@@ -149,4 +149,7 @@ def box_pose_in_camera(
         implemented in this file.
     '''
     g = np.eye(4)
+    box_pose = box_pose_in_world(t, box_speed, box_distance)
+    camera_pose = camera_pose_in_world(t, camera_angular_speed, camera_height)
+    g = np.matmul(np.linalg.inv(camera_pose), box_pose)
     return g

@@ -178,10 +178,14 @@ def so3_to_SO3(omega_hat, theta=1):
 
     """
 
+    #omega = so3_to_R3(omega_hat)
+    #return axis_angle_to_SO3(omega, theta)
     omega = so3_to_R3(omega_hat)
     omega_mag = np.linalg.norm(omega)
-    return axis_angle_to_SO3(omega / omega_mag, omega_mag * theta)
-
+    if omega_mag < 1e-12:
+        return np.eye(3)
+    omega = omega / omega_mag
+    return axis_angle_to_SO3(omega, omega_mag * theta)
 
 def twist_to_se3(xi, theta=1):
     """
