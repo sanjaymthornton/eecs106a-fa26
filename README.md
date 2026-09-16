@@ -8,6 +8,7 @@ This public repository contains the starter code and public checks for EECS C106
 | --- | --- | --- |
 | HW0: Python Bootcamp | [HW0 README](hw0/README.md) | `hw0/HW0.ipynb` |
 | HW1: Vehicle Coordinate Transformations | Assignment handout and [starter docstring](hw1/hw1.py) | `hw1/hw1.py` |
+| HW2: Exponential Coordinates | Assignment handout and starter docstrings | `hw2/hw2.py` and `hw2/kin_func_skeleton.py` |
 
 The assignment handout provides the full problem statement and any additional submission requirements.
 
@@ -68,6 +69,7 @@ Activate this environment whenever you open a new terminal. Install the dependen
 ```bash
 python -m pip install -r hw0/requirements.txt  # HW0
 python -m pip install -r hw1/requirements.txt  # HW1
+python -m pip install -r hw2/requirements.txt  # HW2
 ```
 
 For HW0, run `python -m jupyterlab` and open `hw0/HW0.ipynb`.
@@ -76,6 +78,11 @@ For HW1, implement `get_corners` in `hw1/hw1.py`, then run `python hw1/check_hw1
 and `python hw1/car_vis.py`. Use `python hw1/car_vis.py --path-only` to view the
 trajectory before implementing the function, or add `--save parking.png` to
 save a plot without opening a window.
+
+For HW2, complete the documented functions in `hw2/hw2.py` and
+`hw2/kin_func_skeleton.py`, then run `python hw2/check_hw2.py` and
+`python hw2/kin_func_skeleton.py`. Run `python hw2/visualize_conveyor.py` to
+view the package-scanning example.
 
 ## Getting a newly released assignment
 
