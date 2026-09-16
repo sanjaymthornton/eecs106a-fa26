@@ -155,6 +155,8 @@ def axis_angle_to_SO3(omega, theta):
     """
 
     omega_mag = np.linalg.norm(omega)
+    if omega_mag < 1e-12:
+        return np.eye(3)
     omega_hat = R3_to_so3(omega)
     identity = np.eye(3)
 
@@ -178,8 +180,6 @@ def so3_to_SO3(omega_hat, theta=1):
 
     """
 
-    #omega = so3_to_R3(omega_hat)
-    #return axis_angle_to_SO3(omega, theta)
     omega = so3_to_R3(omega_hat)
     omega_mag = np.linalg.norm(omega)
     if omega_mag < 1e-12:
