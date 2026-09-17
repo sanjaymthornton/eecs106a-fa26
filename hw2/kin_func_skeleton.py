@@ -208,7 +208,7 @@ def twist_to_se3(xi, theta=1):
                                  [omega_hat[1][0], omega_hat[1][1], omega_hat[1][2], v[1]],
                                  [omega_hat[2][0], omega_hat[2][1], omega_hat[2][2], v[2]],
                                  [0, 0, 0, 0]])
-    return omega_hat_with_v
+    return omega_hat_with_v * theta
 
 def se3_to_twist(xi_hat):
     """
