@@ -115,8 +115,8 @@ def fk_2(theta):
     xi_3 = [0, 0, 0, 1, 0, 0]
 
     # Specify end effector configuration at theta = 0.
-    gst0 = np.array([[1, 0, 0, 0],
-                     [0, 1, 0, 8],
+    gst0 = np.array([[0, -1, 0, 0],
+                     [1, 0, 0, 8],
                      [0, 0, 1, 5],
                      [0, 0, 0, 0]], dtype=np.float64)
 
