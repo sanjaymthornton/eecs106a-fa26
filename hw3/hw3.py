@@ -72,7 +72,7 @@ def fk_1(theta):
           partial credit.
     """
     # Specify all twists.
-    xi_1 = [0, 0, 0, 0, 0, 1]
+    xi_1 = [0, 0, 2, 0, 0, 1]
     xi_2 = [0, 0, 0, 0, 1, 0]
     xi_3 = [0, 0, 0, 1, 0, 0]
 
