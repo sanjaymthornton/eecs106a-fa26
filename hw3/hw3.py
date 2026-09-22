@@ -126,7 +126,7 @@ def fk_2(theta):
     # Use product of exponentials formula to compute forward kinematics.
     # Make a call to forward_kinematics from kin_func_skeleton and remember to
     # incorporate gst0
-    g = np.matmul(forward_kinematics(xi_array), gst0)
+    g = np.matmul(forward_kinematics(xi_array, theta), gst0)
 
     # Return the required quantities.
     return g, xi_array
