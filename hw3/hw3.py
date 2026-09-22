@@ -156,9 +156,9 @@ def fk_3(theta):
     xi_6 = [0, 0, 0, 0, 0, 0]
 
     # Specify end effector configuration at theta = 0.
-    gst0 = np.array([[0, 1, 0, 1],
+    gst0 = np.array([[0, 1, 0, 0],
                      [0, 0, 1, 1],
-                     [1, 0, 0, 0],
+                     [1, 0, 0, 1],
                      [0, 0, 0, 1]], dtype=np.float64)
 
     # Stack twists into an array that forward_kinematics can accept.
