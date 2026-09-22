@@ -322,17 +322,23 @@ def inverse_SO3(R):
 
 def SO3_to_axis_angle(R):
     """
-    Converts a rotation matrix to axis angle form
+    Converts a rotation matrix to axis angle form.
+
+    The returned angle is in [0, pi]. The identity has a zero axis. At pi,
+    the largest-magnitude axis component is chosen to be nonnegative.
     """
 
     theta = np.arccos(np.clip((np.trace(R) - 1) / 2, -1.0, 1.0))
-    if np.isclose(theta, 0.0):
+    if theta < 1e-10:
         omega = np.zeros((3,))
-    elif np.isclose(theta, np.pi):
+    elif np.pi - theta < 1e-7:
         eigenvalues, eigenvectors = np.linalg.eig(R)
         index = np.argmin(np.abs(eigenvalues - 1.0))
         omega = np.real(eigenvectors[:, index])
         omega = unitify(omega)
+        largest = np.argmax(np.abs(omega))
+        if omega[largest] < 0:
+            omega = -omega
     else:
         omega = np.array(
             [R[2, 1] - R[1, 2], R[0, 2] - R[2, 0], R[1, 0] - R[0, 1]]
