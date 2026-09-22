@@ -72,9 +72,9 @@ def fk_1(theta):
           partial credit.
     """
     # Specify all twists.
-    xi_1 = [0, 0, 0, 0, 0, 0]
-    xi_2 = [0, 0, 0, 0, 0, 0]
-    xi_3 = [0, 0, 0, 0, 0, 0]
+    xi_1 = [0, 0, 0, 0, 0, 1]
+    xi_2 = [0, 0, 0, -1, 0, 0]
+    xi_3 = [0, 0, 0, 0, 1, 0]
 
     # Specify end effector configuration at theta = 0.
     gst0 = np.array([[1, 0, 0, 0],
@@ -88,7 +88,7 @@ def fk_1(theta):
     # Use product of exponentials formula to compute forward kinematics.
     # Make a call to forward_kinematics from kin_func_skeleton and remember to
     # incorporate gst0
-    g = None
+    g = np.matmul(forward_kinematics(xi_array, theta), gst0)
 
     # Return the required quantities.
     return g, xi_array
@@ -110,9 +110,9 @@ def fk_2(theta):
           partial credit.
     """
     # Specify all twists.
-    xi_1 = [0, 0, 0, 0, 0, 0]
-    xi_2 = [0, 0, 0, 0, 0, 0]
-    xi_3 = [0, 0, 0, 0, 0, 0]
+    xi_1 = [0, 0, 0, 0, 0, 1]
+    xi_2 = [0, 0, 0, 0, 1, 0]
+    xi_3 = [0, 0, 0, 1, 0, 0]
 
     # Specify end effector configuration at theta = 0.
     gst0 = np.array([[1, 0, 0, 0],
@@ -126,7 +126,7 @@ def fk_2(theta):
     # Use product of exponentials formula to compute forward kinematics.
     # Make a call to forward_kinematics from kin_func_skeleton and remember to
     # incorporate gst0
-    g = None
+    g = np.matmul(forward_kinematics(xi_array), gst0)
 
     # Return the required quantities.
     return g, xi_array
