@@ -73,7 +73,7 @@ def fk_1(theta):
     """
     # Specify all twists.
     xi_1 = [0, 0, 0, 0, 0, 1]
-    xi_2 = [0, 0, 10, 0, 1, 0]
+    xi_2 = [0, 0, 0, 0, 1, 0]
     xi_3 = [0, 0, 0, 1, 0, 0]
 
     # Specify end effector configuration at theta = 0.
@@ -111,7 +111,7 @@ def fk_2(theta):
     """
     # Specify all twists.
     xi_1 = [0, 0, 2, 0, 0, 1]
-    xi_2 = [0, 0, 0, 0, 1, 0]
+    xi_2 = [0, 0, 10, 0, 1, 0]
     xi_3 = [0, 0, 0, 1, 0, 0]
 
     # Specify end effector configuration at theta = 0.
