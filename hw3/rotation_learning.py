@@ -406,7 +406,7 @@ def encode_6d(rotations):
         NumPy array with shape ``(N, 6)``. Each row contains the first
         column of its rotation followed by the second column.
     """
-     
+    return np.concatenate([rotations[:, :, 0], rotations[:, :, 1]], axis=1)
 
 def decode_6d(vectors):
     """Decode 6D predictions using the stated Gram--Schmidt procedure.
@@ -420,9 +420,14 @@ def decode_6d(vectors):
         remove its component from the second and normalize the result, then
         use their cross product as the third rotation-matrix column.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    v1 = vectors[:, 0:3]
+    v2 = vectors[:, 3:6]
 
+    u1 = v1 / np.maximum(np.linalg.norm(v1, axis=1, keepdims=True), 1e-12)
+    v2 = v2 - np.sum(u1 * v2, axis=1, keepdims=True) * u1
+    u2 = v2 / np.maximum(np.linalg.norm(v2, axis=1, keepdims=True), 1e-12)
+    u3 = np.cross(u1, u2)
+    return np.stack([u1, u2, u3], axis=2)
 
 # ============================= PROVIDED: EXPERIMENTS =============================
 # The registry, training loop, metrics, and dense probe are complete below.
