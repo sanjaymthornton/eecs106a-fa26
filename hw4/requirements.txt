@@ -1,0 +1,5 @@
+numpy==2.2.6
+scipy==1.17.0
+EAIK==1.2.2
+roboticstoolbox-python[swift]==1.4.2
+robot-descriptions==2.0.0
