@@ -359,8 +359,15 @@ def normalize_quaternions(quaternions):
         NumPy array with shape ``(N, 4)`` whose rows have unit norm.
         Ensure we don't divide by zero!
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    result = []
+    for i in range(len(quaternions)):
+        q = quaternions[i]
+        if np.linalg.norm(q) == 0:
+            result.append([0, 0, 0, 0])
+        else:
+            mag = np.linalg.norm(q)
+            result.append(q / mag)
+    return np.array(result)
 
 def canonicalize_quaternions(quaternions):
     """Apply the ``w >= 0`` quaternion-label convention.
@@ -373,8 +380,7 @@ def canonicalize_quaternions(quaternions):
         A new NumPy array with shape ``(N, 4)``. Multiply rows whose last
         component is negative by ``-1``. Do not modify the input array.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    
 
 def decode_quaternions(predictions):
     """Decode raw quaternion predictions.
