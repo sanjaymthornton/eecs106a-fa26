@@ -380,7 +380,7 @@ def canonicalize_quaternions(quaternions):
         A new NumPy array with shape ``(N, 4)``. Multiply rows whose last
         component is negative by ``-1``. Do not modify the input array.
     """
-    
+    return np.where(quaternions[:, 3:4] < 0, -quaternions, quaternions)
 
 def decode_quaternions(predictions):
     """Decode raw quaternion predictions.
@@ -393,8 +393,8 @@ def decode_quaternions(predictions):
         NumPy array with shape ``(N, 3, 3)``. Normalize the predictions with
         ``normalize_quaternions`` before passing them to ``Rot.from_quat``.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    normalized = normalize_quaternions(predictions)
+    return Rot.from_quat(normalized).as_matrix()
 
 def encode_6d(rotations):
     """Encode rotation matrices using the 6D representation.
@@ -406,8 +406,7 @@ def encode_6d(rotations):
         NumPy array with shape ``(N, 6)``. Each row contains the first
         column of its rotation followed by the second column.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+     
 
 def decode_6d(vectors):
     """Decode 6D predictions using the stated Gram--Schmidt procedure.
