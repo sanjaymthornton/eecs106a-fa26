@@ -246,7 +246,7 @@ def rotations_from_s(s):
     Returns:
         A SciPy ``Rotation`` object containing ``N`` rotations.
     """
-    angles = None  # TODO YOUR CODE HERE
+    angles = np.stack([0.4 * np.sin(s), 0.3 * np.sin(2 * s), s], axis=1)
     if angles is None:
         raise NotImplementedError
     return Rot.from_euler("XYZ", angles)
@@ -278,7 +278,7 @@ def make_dataset(seed=0):
         - ``R_sweep``: shape ``(4000, 3, 3)`` sweep rotation matrices.
     """
     rng = np.random.default_rng(seed)
-    s0 = None  # TODO YOUR CODE HERE
+    s0 = rng.uniform(0, 2 * np.pi, 500)
     if s0 is None:
         raise NotImplementedError
     s = np.concatenate([s0, s0 + 2 * np.pi])
@@ -309,8 +309,8 @@ def decode_matrix(predictions):
         NumPy array with shape ``(N, 3, 3)`` containing valid rotations.
         Reshape each row and project it onto SO(3) with ``renormalize_SO3``.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    rotations = np.reshape(predictions, (-1, 3, 3))
+    return renormalize_SO3(rotations)
 
 def decode_euler(predictions):
     """Decode intrinsic XYZ Euler-angle predictions.
@@ -322,8 +322,7 @@ def decode_euler(predictions):
         NumPy array with shape ``(N, 3, 3)``. Capitalization matters: use
         ``Rot.from_euler("XYZ", predictions)``.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    return Rot.from_euler("XYZ", predictions).as_matrix()
 
 def encode_exponential(rotations):
     """Encode rotation matrices as exponential coordinates.
@@ -335,8 +334,7 @@ def encode_exponential(rotations):
         NumPy array with shape ``(N, 3)``. For each matrix ``R``, compute
         ``SO3 -> R3`` conversion (use kin_func_skeleton), which is ``log(R)^vee``.
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    return np.stack([so3_to_R3(SO3_to_so3(r)) for r in rotations])
 
 def decode_exponential(vectors):
     """Decode exponential coordinates into rotation matrices.
@@ -348,8 +346,7 @@ def decode_exponential(vectors):
         NumPy array with shape ``(N, 3, 3)``. For each vector ``v``, compute
         ``R3 -> SO3`` (use kin_func_skeleton).
     """
-    # TODO YOUR CODE HERE
-    raise NotImplementedError
+    return np.stack([so3_to_SO3(R3_to_so3(v)) for v in vectors])
 
 def normalize_quaternions(quaternions):
     """Normalize predicted quaternions before decoding them.
