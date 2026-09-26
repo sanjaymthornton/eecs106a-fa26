@@ -154,7 +154,8 @@ def select_solutions_by_objective(solutions, q_current):
 
     Keep solutions whose six joint angles are between ``-2 * np.pi`` and
     ``2 * np.pi``. From those solutions, use the 2-norm to find the solution
-    closest to ``q_current`` and the solution closest to zero (our home config).
+    closest to ``q_current`` and the infinity norm to find the solution
+    closest to zero (our home config).
 
     Returns:
         ``(closest_current, closest_zero, valid)``, where the first two items
