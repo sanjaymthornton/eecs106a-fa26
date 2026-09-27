@@ -206,5 +206,6 @@ def solve_ur7e_pose(desired_end_effector_pose, q_current):
         have shape ``(6,)`` and ``valid`` has shape ``(M, 6)``.
     """
     candidates = robot.IK(desired_end_effector_pose).Q
-    closest_current, closest_zero, valid = select_solutions_by_objective(candidates, q_current)
+    verified = verify_ik_solutions(desired_end_effector_pose, candidates)
+    closest_current, closest_zero, valid = select_solutions_by_objective(verified, q_current)
     return closest_current, closest_zero, valid
