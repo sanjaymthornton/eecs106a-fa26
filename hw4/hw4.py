@@ -106,10 +106,13 @@ def verify_ik_solutions(desired_end_effector_pose, candidates):
         candidate passes.
     """
     verified = []
-
-    # TODO: Check each candidate with forward kinematics and append valid rows.
-    ...
-
+    for cand in candidates:
+        actual_end_effector_pose = ur7e_fk(cand)
+        position_error, orientation_error = pose_error(
+            actual_end_effector_pose, desired_end_effector_pose
+        )
+        if position_error <= POSITION_TOLERANCE and orientation_error <= ORIENTATION_TOLERANCE:
+            verified.append(cand)
     return np.array(verified)
 
 
