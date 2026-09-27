@@ -183,9 +183,8 @@ def select_solutions_by_objective(solutions, q_current):
         have shape ``(6,)`` and ``valid`` has shape ``(M, 6)``.
     """
     valid = [s for s in solutions if all((-2 * np.pi) <= val <= (2 * np.pi) for val in s)]
-    results = closest_solutions_by_norm(valid, q_current)
-    closest_current = results[1]
-    closest_zero = results[2]
+    closest_current = closest_solutions_by_norm(valid, q_current)[1]
+    closest_zero = closest_solutions_by_norm(valid, np.zeros(6))[2]
     return closest_current, closest_zero, np.array(valid)
 
 
