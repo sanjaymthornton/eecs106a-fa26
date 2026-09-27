@@ -140,17 +140,26 @@ def closest_solutions_by_norm(solutions, q_current):
         ``(closest_l1, closest_l2, closest_linf)``, where each item is one row
         from ``solutions`` with shape ``(6,)``.
     """
-    closest_l1 = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
-    closest_l2 = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
-    closest_linf = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
+    closest_l1 = None
+    closest_l2 = None
+    closest_linf = None
+    best_l1 = np.inf
+    best_l2 = np.inf
+    best_linf = np.inf
 
     for solution in solutions:
         joint_motion = solution - q_current
-        if np.linalg.norm(joint_motion, ord=1) < np.linalg.norm(closest_l1, ord=1):
-            closest_l1 = solution 
-        if np.linalg.norm(joint_motion, ord=2) < np.linalg.norm(closest_l2, ord=2):
+        l1_norm = np.linalg.norm(joint_motion, ord=1)
+        l2_norm = np.linalg.norm(joint_motion, ord=2)
+        inf_norm = np.linalg.norm(joint_motion, ord=np.inf)
+        if l1_norm < best_l1:
+            best_l1 = l1_norm
+            closest_l1 = solution
+        if l2_norm < best_l2:
+            best_l2 = l2_norm
             closest_l2 = solution
-        if np.linalg.norm(joint_motion, ord=np.inf) < np.linalg.norm(closest_linf, ord=np.inf):
+        if inf_norm < best_linf:
+            best_linf = inf_norm
             closest_linf = solution
     return closest_l1, closest_l2, closest_linf
 
