@@ -182,11 +182,10 @@ def select_solutions_by_objective(solutions, q_current):
         ``(closest_current, closest_zero, valid)``, where the first two items
         have shape ``(6,)`` and ``valid`` has shape ``(M, 6)``.
     """
-    valid = []
-
-    # TODO: Keep solutions within the joint limits and select both objectives.
-    ...
-
+    valid = [s for s in solutions if all((-2 * np.pi) <= val <= (2 * np.pi) for val in s)]
+    results = closest_solutions_by_norm(valid, q_current)
+    closest_current = results[1]
+    closest_zero = results[2]
     return closest_current, closest_zero, np.array(valid)
 
 
