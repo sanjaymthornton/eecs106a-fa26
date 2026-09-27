@@ -78,9 +78,8 @@ def ur7e_fk(q):
         end-effector pose in the robot base frame.
     """
 
-    # TODO: Use your HW2 forward-kinematics function for the UR7e.
-    return ...
-
+    twists = UR7E_TWISTS
+    return forward_kinematics(twists, q) @ UR7E_ZERO_POSE
 
 def verify_ik_solutions(desired_end_effector_pose, candidates):
     """Keep only IK candidates that reproduce the requested pose.
