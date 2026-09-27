@@ -81,6 +81,7 @@ def ur7e_fk(q):
     twists = UR7E_TWISTS
     return forward_kinematics(twists, q) @ UR7E_ZERO_POSE
 
+
 def verify_ik_solutions(desired_end_effector_pose, candidates):
     """Keep only IK candidates that reproduce the requested pose.
 
@@ -139,9 +140,18 @@ def closest_solutions_by_norm(solutions, q_current):
         ``(closest_l1, closest_l2, closest_linf)``, where each item is one row
         from ``solutions`` with shape ``(6,)``.
     """
-    # TODO: Compute the joint motions and select one row for each norm.
-    ...
+    closest_l1 = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
+    closest_l2 = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
+    closest_linf = [np.inf, np.inf, np.inf, np.inf, np.inf, np.inf]
 
+    for solution in solutions:
+        joint_motion = solution - q_current
+        if np.linalg.norm(joint_motion, ord=1) < np.linalg.norm(closest_l1, ord=1):
+            closest_l1 = solution 
+        if np.linalg.norm(joint_motion, ord=2) < np.linalg.norm(closest_l2, ord=2):
+            closest_l2 = solution
+        if np.linalg.norm(joint_motion, ord=np.inf) < np.linalg.norm(closest_linf, ord=np.inf):
+            closest_linf = solution
     return closest_l1, closest_l2, closest_linf
 
 
