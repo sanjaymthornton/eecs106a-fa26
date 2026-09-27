@@ -205,7 +205,6 @@ def solve_ur7e_pose(desired_end_effector_pose, q_current):
         ``(closest_current, closest_zero, valid)``, where the first two items
         have shape ``(6,)`` and ``valid`` has shape ``(M, 6)``.
     """
-    # TODO: Generate, verify, and select using both secondary objectives.
-    ...
-
+    candidates = robot.IK(desired_end_effector_pose).Q
+    closest_current, closest_zero, valid = select_solutions_by_objective(candidates, q_current)
     return closest_current, closest_zero, valid
