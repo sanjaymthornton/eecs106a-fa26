@@ -1,0 +1,35 @@
+<robot name="chair_swing">
+  <material name="gray"><color rgba="0.60 0.60 0.60 1"/></material>
+  <material name="pole"><color rgba="0.30 0.34 0.38 1"/></material>
+  <link name="base">
+    <visual><origin xyz="0 0 0.015"/><geometry><cylinder radius="0.10" length="0.03"/></geometry><material name="pole"/></visual>
+    <visual><origin xyz="0 0 0.40"/><geometry><cylinder radius="0.02" length="0.80"/></geometry><material name="pole"/></visual>
+  </link>
+  <link name="fulcrum">
+    <visual><geometry><cylinder radius="0.055" length="0.035"/></geometry><material name="gray"/></visual>
+  </link>
+  <joint name="lift" type="prismatic">
+    <parent link="base"/><child link="fulcrum"/><origin xyz="0 0 0.57"/><axis xyz="0 0 1"/>
+    <limit lower="0" upper="0.20" effort="1" velocity="1"/>
+  </joint>
+  <link name="arm">
+    <visual><origin xyz="0 -0.125 0" rpy="1.5707963267948966 0 0"/><geometry><cylinder radius="0.009" length="0.25"/></geometry><material name="gray"/></visual>
+  </link>
+  <joint name="spin" type="continuous">
+    <parent link="fulcrum"/><child link="arm"/><axis xyz="0 0 1"/>
+  </joint>
+  <link name="chain">
+    <visual><origin xyz="0 -0.035 -0.10"/><geometry><cylinder radius="0.0025" length="0.20"/></geometry><material name="gray"/></visual>
+    <visual><origin xyz="0 0.035 -0.10"/><geometry><cylinder radius="0.0025" length="0.20"/></geometry><material name="gray"/></visual>
+  </link>
+  <joint name="sway" type="continuous">
+    <parent link="arm"/><child link="chain"/><origin xyz="0 -0.25 0"/><axis xyz="1 0 0"/>
+  </joint>
+  <link name="seat">
+    <visual><geometry><box size="0.10 0.08 0.018"/></geometry><material name="gray"/></visual>
+    <visual><origin xyz="-0.045 0 0.05"/><geometry><box size="0.015 0.08 0.10"/></geometry><material name="gray"/></visual>
+  </link>
+  <joint name="seat_mount" type="fixed">
+    <parent link="chain"/><child link="seat"/><origin xyz="0 0 -0.20"/>
+  </joint>
+</robot>

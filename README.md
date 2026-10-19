@@ -4,11 +4,17 @@ This public repository contains the starter code and public checks for EECS C106
 
 ## Assignments
 
+Seven assignments have been released: HW0 through HW6.
+
 | Assignment | Instructions | File to complete |
 | --- | --- | --- |
 | HW0: Python Bootcamp | [HW0 README](hw0/README.md) | `hw0/HW0.ipynb` |
 | HW1: Vehicle Coordinate Transformations | Assignment handout and [starter docstring](hw1/hw1.py) | `hw1/hw1.py` |
 | HW2: Exponential Coordinates | Assignment handout and starter docstrings | `hw2/hw2.py` and `hw2/kin_func_skeleton.py` |
+| HW3: Forward Kinematics and Rotation Learning | Assignment handout and starter docstrings | `hw3/hw3.py` and `hw3/rotation_learning.py` |
+| HW4: Inverse Kinematics | Assignment handout and starter docstrings | `hw4/hw4.py` |
+| HW5: Plane Fitting with RANSAC | Assignment handout and starter docstrings | `hw5/plane_fitting.py` |
+| HW6: Trajectories and Integration in SE(3) | Assignment handout and starter docstrings | `hw6/hw6.py` |
 
 The assignment handout provides the full problem statement and any additional submission requirements.
 
@@ -70,6 +76,10 @@ Activate this environment whenever you open a new terminal. Install the dependen
 python -m pip install -r hw0/requirements.txt  # HW0
 python -m pip install -r hw1/requirements.txt  # HW1
 python -m pip install -r hw2/requirements.txt  # HW2
+python -m pip install -r hw3/requirements.txt  # HW3
+python -m pip install -r hw4/requirements.txt  # HW4
+python -m pip install -r hw5/requirements.txt  # HW5
+python -m pip install -r hw6/requirements.txt  # HW6
 ```
 
 For HW0, run `python -m jupyterlab` and open `hw0/HW0.ipynb`.
@@ -83,6 +93,23 @@ For HW2, complete the documented functions in `hw2/hw2.py` and
 `hw2/kin_func_skeleton.py`, then run `python hw2/check_hw2.py` and
 `python hw2/kin_func_skeleton.py`. Run `python hw2/visualize_conveyor.py` to
 view the package-scanning example.
+
+For HW3, complete `hw3/hw3.py` and `hw3/rotation_learning.py`, then run
+`python hw3/check_hw3.py`. Run `python hw3/rotation_learning.py` to train
+the models and generate the experiment plots.
+
+For HW4, complete `hw4/hw4.py`, then run `python hw4/check_hw4.py`.
+Run `python hw4/visualize_ik.py` to view the inverse-kinematics example
+in your browser.
+
+For HW5, complete `hw5/plane_fitting.py`, then run
+`python hw5/check_hw5.py` and `python hw5/analyze.py`.
+Run `python hw5/view_cloud.py` to inspect the point cloud and fitted planes.
+
+For HW6, complete `hw6/hw6.py`, then run `python hw6/check_hw6.py`.
+Run `python hw6/visualize.py --sweep` to compare integration timesteps in
+the chair-swing visualizer. Run `python hw6/run_trajectory.py --sweep`
+for the error plots.
 
 ## Getting a newly released assignment
 
@@ -110,7 +137,7 @@ For HW0, stage `hw0/HW0.ipynb` instead. Keep each assignment in its original dir
 
 Open Gradescope directly, choose the assignment and GitHub submission method, then select your private `eecs106a-fa26` repository and its `main` branch. Verify that the intended files and latest commit are included, and review the grading results. After making corrections, commit, push, and resubmit.
 
-Saving locally or pushing to GitHub does not create a Gradescope submission. Passing public checks does not guarantee full credit on the additional grading tests.
+Saving locally or pushing to GitHub does not create a Gradescope submission. Passing public checks does not replace completing the written questions or other handout requirements.
 
 ## Repository hygiene
 
