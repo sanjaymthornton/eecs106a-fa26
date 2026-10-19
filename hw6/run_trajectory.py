@@ -93,7 +93,7 @@ def simulate(trajectory, velocity_function, step_function, dt=0.1, duration=500.
             velocity = velocity_function(times[index])
             next_pose = np.asarray(step_function(
                 poses[-1].copy(), velocity, times[index + 1] - times[index]
-            ), dtype=float)
+                ), dtype=float)
         if next_pose.shape != (4, 4) or not np.isfinite(next_pose).all():
             raise ValueError("euler_step must return a finite (4, 4) pose")
         poses.append(next_pose)
