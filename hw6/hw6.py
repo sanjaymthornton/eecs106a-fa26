@@ -93,5 +93,7 @@ def euler_step(pose, velocity_hat, dt):
     computes the rigid-motion increment over dt. Apply renormalize_SE3
     to the updated pose to correct floating-point drift in its rotation.
     """
-    # TODO
-    return ...
+    velocity_vect = se3_to_twist(velocity_hat)
+    velocity = twist_to_SE3(velocity_vect, dt)
+    res = pose @ velocity
+    return renormalize_SE3(res)
