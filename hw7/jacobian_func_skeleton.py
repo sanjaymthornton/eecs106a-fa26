@@ -22,9 +22,13 @@ def adjoint(g):
     Returns:
         NumPy array with shape ``(6, 6)`` representing ``Ad_g``.
     """
-
-    # TODO
-    return ...
+    R = g[:3, :3]
+    p = g[:3, 3]
+    adj = np.eye(6)
+    adj[:3, :3] = R
+    adj[:3, 3:6] = R3_to_so3(p) @ R
+    adj[3:6, 3:6] = R
+    return adj
 
 
 def adjoint_inv(g):
@@ -38,8 +42,15 @@ def adjoint_inv(g):
         NumPy array with shape ``(6, 6)`` representing ``Ad_g^{-1}``.
     """
 
-    # TODO
-    return ...
+    R = g[:3, :3]
+    p = g[:3, 3]
+    R_T = R.T
+    p_hat = R3_to_so3(p)
+    adj = np.eye(6)
+    adj[:3, :3] = R_T
+    adj[:3, 3:6] = -R_T @ p_hat
+    adj[3:6, 3:6] = R_T
+    return adj
 
 
 def spatial_jacobian(twists, theta):
@@ -54,8 +65,8 @@ def spatial_jacobian(twists, theta):
         NumPy array with shape ``(6, N)`` containing the spatial Jacobian at
         ``theta``.
     """
+    for i in range(len(twists)):
 
-    # TODO
     return ...
 
 
