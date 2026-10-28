@@ -65,10 +65,13 @@ def spatial_jacobian(twists, theta):
         NumPy array with shape ``(6, N)`` containing the spatial Jacobian at
         ``theta``.
     """
-    for i in range(len(twists)):
-
-    return ...
-
+    N = twists.shape[1]
+    jacobian = np.zeros((6, N))
+    T = np.eye(4)
+    for i in range(N):
+        jacobian[:, i] = adjoint(T) @ twists[:, i]
+        T = T @ twist_to_SE3(twists[:, i] * theta[i])
+    return jacobian
 
 def body_jacobian(twists, theta, g_st0):
     """Calculate the body manipulator Jacobian.
@@ -84,10 +87,16 @@ def body_jacobian(twists, theta, g_st0):
         NumPy array with shape ``(6, N)`` containing the body Jacobian at
         ``theta``.
     """
-
-    # TODO
-    return ...
-
+    N = twists.shape[1]
+    jacobian = np.zeros((6, N)) 
+    for i in range(N):
+        to_adj = np.eye(4)
+        for j in range(i + 1, N):
+            to_adj = to_adj @ twist_to_SE3(twists[:, j] * theta[j])
+        to_adj = to_adj @ g_st0
+        to_adj = adjoint(inverse_SE3(to_adj))
+        jacobian[:, i] = to_adj @ twists[:, i]
+    return jacobian
 
 def spatial_velocity(twists, theta, theta_dot):
     """Calculate the spatial end-effector velocity.
@@ -102,10 +111,7 @@ def spatial_velocity(twists, theta, theta_dot):
     Returns:
         NumPy array with shape ``(6,)`` containing the spatial velocity.
     """
-
-    # TODO
-    return ...
-
+    return spatial_jacobian(twists, theta) @ theta_dot
 
 def body_velocity(twists, theta, theta_dot, g_st0):
     """Calculate the body end-effector velocity.
@@ -122,10 +128,7 @@ def body_velocity(twists, theta, theta_dot, g_st0):
     Returns:
         NumPy array with shape ``(6,)`` containing the body velocity.
     """
-
-    # TODO
-    return ...
-
+    return body_jacobian(twists, theta, g_st0) @ theta_dot
 
 def spatial_configuration_error(pose, desired_pose):
     """Calculate the spatial-frame transformation error.
@@ -138,10 +141,7 @@ def spatial_configuration_error(pose, desired_pose):
     Returns:
         NumPy array with shape ``(4, 4)`` containing our error.
     """
-
-    # TODO
-    return ...
-
+    return desired_pose @ inverse_SE3(pose)
 
 def spatial_error_twist(error):
     """Convert a transformation error into an exponential-coordinate vector.
@@ -155,10 +155,8 @@ def spatial_error_twist(error):
 
     Use ``scipy.linalg.logm`` for the matrix logarithm.
     """
-
-    # TODO
-    return ...
-
+    log_error = logm(error)
+    return se3_to_twist(log_error)
 
 def jacobian_inverse_kinematics(
     twists, theta, g_st0, desired_pose, step_size=0.2,
@@ -185,6 +183,17 @@ def jacobian_inverse_kinematics(
         ``theta == history[-1]``. Return the latest values even if the target
         is not reached.
     """
-
-    # TODO
-    return ...
+    history = np.array([])
+    history.append(theta)
+    for i in range(max_iterations):
+        se3_twists = np.array([])
+        for j in range(twists.shape[1]):
+            se3_twists.append(twist_to_SE3(twists[:, j], theta[j]))
+        if i == 0:
+            curr_pose = g_st0
+        else: 
+            curr_pose = forward_kinematics(twists, history[-1])
+        error = ___
+        if np.linalg.norm(error) <= tolerance:
+            break
+    return history[-1], history
