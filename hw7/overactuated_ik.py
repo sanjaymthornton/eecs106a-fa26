@@ -60,8 +60,7 @@ def null_space_ik_step(
     Returns:
         NumPy array with shape ``(7,)`` containing the updated joint angles.
     """
-    # TODO
-    return ...
+       
 
 
 def joint_limit_gradient(theta):
