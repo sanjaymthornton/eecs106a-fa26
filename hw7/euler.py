@@ -50,8 +50,8 @@ def manipulability(jacobian):
         Nonnegative scalar. Include zero singular values, so a singular
         Jacobian has zero manipulability. ``np.linalg.svd`` may be useful.
     """
-    # TODO
-    return ...
+    _, vals, _ = np.linalg.svd(jacobian)
+    return np.prod(vals)
 
 
 def main():
