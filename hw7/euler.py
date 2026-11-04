@@ -25,8 +25,17 @@ def euler_jacobian(theta):
         NumPy array with shape ``(3, 3)`` mapping the angle rates to the
         spatial angular velocity.
     """
-    # TODO
-    return ...
+    i = np.array([1, 0, 0])
+    j = np.array([0, 1, 0])
+    k = np.array([0, 0, 1])
+
+    gamma = theta[0]
+    beta = theta[1]
+    alpha = theta[2]
+
+    R_z = so3_to_SO3(R3_to_so3(k, gamma), gamma)
+    R_y = so3_to_SO3(R3_to_so3(j, beta), beta)
+    return np.column_stack((k, R_z @ k, R_z @ R_y @ k))
 
 
 def manipulability(jacobian):

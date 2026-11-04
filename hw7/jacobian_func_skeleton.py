@@ -183,17 +183,15 @@ def jacobian_inverse_kinematics(
         ``theta == history[-1]``. Return the latest values even if the target
         is not reached.
     """
-    history = np.array([])
-    history.append(theta)
+    history = []
+    angles = theta
+    history.append(angles)
     for i in range(max_iterations):
-        se3_twists = np.array([])
-        for j in range(twists.shape[1]):
-            se3_twists.append(twist_to_SE3(twists[:, j], theta[j]))
-        if i == 0:
-            curr_pose = g_st0
-        else: 
-            curr_pose = forward_kinematics(twists, history[-1])
-        error = ___
-        if np.linalg.norm(error) <= tolerance:
+        curr_pose = forward_kinematics(twists, angles) @ g_st0
+        error = spatial_configuration_error(curr_pose, desired_pose)
+        s_twist_err = spatial_error_twist(error)
+        if np.linalg.norm(s_twist_err) <= tolerance:
             break
-    return history[-1], history
+        angles = angles + step_size * (np.linalg.pinv(spatial_jacobian(twists, angles)) @ s_twist_err)
+        history.append(angles)
+    return np.array(history[-1]), np.array(history)
