@@ -60,7 +60,9 @@ def null_space_ik_step(
     Returns:
         NumPy array with shape ``(7,)`` containing the updated joint angles.
     """
-       
+    j = spatial_jacobian(PANDA_TWISTS, theta) 
+    j_pinv = np.linalg.pinv(j)
+    return theta + step_size * ((j_pinv @ velocity) + secondary_gain * (np.eye(7) - (j_pinv @ j)) @ secondary_gradient)
 
 
 def joint_limit_gradient(theta):
@@ -75,6 +77,8 @@ def joint_limit_gradient(theta):
         NumPy array with shape ``(7,)`` containing the gradient of our
         joint-limit avoidance direction.
     """
-
-    # TODO
-    return ...
+    theta = np.asarray(theta, dtype=float)
+    c_i = (PANDA_THETA_MIN + PANDA_THETA_MAX) / 2 
+    r_i = (PANDA_THETA_MAX - PANDA_THETA_MIN) / 2
+    result = []
+    return -(theta - c_i) / r_i**2
