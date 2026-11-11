@@ -157,7 +157,9 @@ def interpolate_joint_path(theta_start, theta_end, max_joint_step):
     if np.array_equal(theta_start, theta_end):
         return np.array([theta_start])
     # TODO: calculate the interval count and return equally spaced samples.
-
+    max_change = np.max(np.abs(theta_end - theta_start))
+    intervals = int(np.ceil(max_change / max_joint_step))
+    return np.linspace(theta_start, theta_end, intervals + 1)
 
 
 def smooth_path(path):
@@ -177,7 +179,9 @@ def smooth_path(path):
     fixes the endpoints and handles constant paths without optimization.
     """
     # TODO
-    return ...
+    resampled_path = resample_path(path, count=40)
+    traj = prepare_trajopt(resampled_path)
+    return solve_trajopt(traj)
 
 
 # ============================= PROVIDED =============================
