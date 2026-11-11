@@ -57,8 +57,28 @@ def rrt(start, goal, edge_in_collision, bounds, step_size=0.15, max_iterations=2
     for _ in range(max_iterations):
         # TODO: sample a target, find its nearest node, and steer by at most step_size.
         # Skip zero-length or colliding extensions. Append candidate and its parent.
-        raise NotImplementedError # Remove this line when function is completed
+        if rng.random() < GOAL_SAMPLE_PROBABILITY:
+            target = goal
+        else: 
+            target = rng.uniform(bounds[:, 0], bounds[:, 1])
+        distances = np.linalg.norm(np.array(nodes) - target, axis=1)
+        nearest_index = int(np.argmin(distances))
+        nearest = nodes[nearest_index]
 
+        direction = target - nearest
+        dist = np.linalg.norm(direction)
+        if dist == 0:
+            continue
+        if dist <= step_size:
+            candidate = target.copy()
+        else:
+            candidate = nearest + direction / dist * step_size
+
+        if edge_in_collision(nearest, candidate):
+            continue
+        nodes.append(candidate)
+        parents.append(nearest_index)
+        
         # Provided: Goal connection and path reconstruction
         if np.linalg.norm(candidate - goal) <= step_size and not edge_in_collision(candidate, goal):
             if np.array_equal(candidate, goal):
@@ -95,17 +115,21 @@ def robot_in_collision(theta, obstacles):
     for link, indices in enumerate(LINK_SPHERES):
         for obstacle in obstacles:
             # TODO: skip this obstacle if the coarse sphere does not overlap it.
-            raise NotImplementedError
+            if not spheres_overlap(coarse[link], COARSE_RADII[link], obstacle[:3], obstacle[3]):
+                continue
             for index in indices:
                 # TODO: return True if this fine sphere overlaps the obstacle.
-                raise NotImplementedError
+                if spheres_overlap(fine[index], FINE_RADII[index], obstacle[:3], obstacle[3]):
+                    return True
     for first, second in SELF_COLLISION_PAIRS:
         # TODO: skip this pair if its coarse spheres do not overlap.
-        raise NotImplementedError
+        if not spheres_overlap(coarse[first], COARSE_RADII[first], coarse[second], COARSE_RADII[second]):
+            continue
         for a in LINK_SPHERES[first]:
             for b in LINK_SPHERES[second]:
                 # TODO: return True if these fine spheres overlap.
-                raise NotImplementedError
+                if spheres_overlap(fine[a], FINE_RADII[a], fine[b], FINE_RADII[b]):
+                    return True
     return False
 
 
@@ -133,7 +157,7 @@ def interpolate_joint_path(theta_start, theta_end, max_joint_step):
     if np.array_equal(theta_start, theta_end):
         return np.array([theta_start])
     # TODO: calculate the interval count and return equally spaced samples.
-    raise NotImplementedError
+
 
 
 def smooth_path(path):
@@ -141,6 +165,7 @@ def smooth_path(path):
 
     Args:
         path: Finite NumPy array (N, 6), N >= 1, in JOINT_NAMES order. It must
+            A
             respect JOINT_BOUNDS and be collision-free in robot.OBSTACLES.
 
     Returns:
