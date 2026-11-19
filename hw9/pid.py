@@ -37,9 +37,8 @@ class LowPassFilter:
             self.v_f as None until the first update.
         """
         self.v_f = None
-
-        # TODO: compute and store alpha.
-        self.alpha = None
+        self.tau = 1 / (2 * np.pi * cutoff_hz)
+        self.alpha = dt / (dt + self.tau)
 
     def update(self, v):
         """Filter one scalar velocity sample.
@@ -50,8 +49,11 @@ class LowPassFilter:
         Returns:
             Scalar filtered velocity. On the first call, set self.v_f to v.
         """
-        # TODO
-        raise NotImplementedError
+        if self.v_f == None:
+            self.v_f = v
+        else:
+            self.v_f = self.v_f + self.alpha * (v - self.v_f)
+        return self.v_f
 
 
 class PIDController:
@@ -89,6 +91,13 @@ class PIDController:
         self.kt = 0.0
         self.I = 0.0
         self.x_prev = None
+        if anti_windup:
+            self.Td = self.kd / self.kp
+            self.Ti = self.kp / self.ki
+            self.T_t = np.sqrt(self.Td * self.Ti)
+            self.kt = 1 / self.T_t
+            edot_integrated = e + (self.kt / self.ki) * (u_sat - u_unsat)
+            # Need to define e, u_sat, and u_unsat
 
     def update(self, x_meas, x_ref, xdot=None):
         """Compute and return one control force, then save controller state.
@@ -114,9 +123,20 @@ class PIDController:
 
         Hint: Use np.clip(value, lower_bound, upper_bound) to limit the force.
         """
-        errors_integrated = np.array([0])
-        errors = np.array([x_ref - x_meas])
-        errors_integrated.append(errors_integrated[-1] + dt * errors[-1])
-        
-        velocities = np.array([0])
-        
+        error = x_ref - x_meas
+        if xdot != None:
+            v = xdot
+        else:
+            if self.x_prev == None:
+                v = 0.0
+            else:
+                v = finite_difference(x_meas, self.x_prev, self.dt)
+
+            if self.filter != None:
+                v = self.filter.update(v)
+
+        self.x_prev = x_meas
+        u_original = self.kp * error + self.I - self.kd * v
+        u = np.clip(u_original, -self.u_max, self.u_max)
+        self.I += self.dt * (self.ki * error + self.kt * (u - u_original))
+        return u
