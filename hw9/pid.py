@@ -6,7 +6,6 @@ Run python hw9/run_pid.py from the semester repository root.
 
 import numpy as np
 
-
 def finite_difference(x, x_prev, dt):
     """Estimate velocity from two position samples using a backward difference.
 
@@ -17,8 +16,7 @@ def finite_difference(x, x_prev, dt):
     Returns:
         Scalar velocity in meters per second.
     """
-    # TODO
-    raise NotImplementedError
+    return (x - x_prev) / dt
 
 
 class LowPassFilter:
@@ -116,5 +114,9 @@ class PIDController:
 
         Hint: Use np.clip(value, lower_bound, upper_bound) to limit the force.
         """
-        # TODO
-        raise NotImplementedError
+        errors_integrated = np.array([0])
+        errors = np.array([x_ref - x_meas])
+        errors_integrated.append(errors_integrated[-1] + dt * errors[-1])
+        
+        velocities = np.array([0])
+        
