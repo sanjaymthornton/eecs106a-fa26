@@ -95,8 +95,8 @@ class PIDController:
             if T_t is None:
                 self.Td = self.kd / self.kp
                 self.Ti = self.kp / self.ki
-                self.T_t = np.sqrt(self.Td * self.Ti)
-            self.kt = 1 / self.T_t
+                T_t = np.sqrt(self.Td * self.Ti)
+            self.kt = 1 / T_t
 
     def update(self, x_meas, x_ref, xdot=None):
         """Compute and return one control force, then save controller state.
