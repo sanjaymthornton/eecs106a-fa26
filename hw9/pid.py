@@ -92,12 +92,11 @@ class PIDController:
         self.I = 0.0
         self.x_prev = None
         if anti_windup:
-            self.Td = self.kd / self.kp
-            self.Ti = self.kp / self.ki
-            self.T_t = np.sqrt(self.Td * self.Ti)
+            if T_t is None:
+                self.Td = self.kd / self.kp
+                self.Ti = self.kp / self.ki
+                self.T_t = np.sqrt(self.Td * self.Ti)
             self.kt = 1 / self.T_t
-            edot_integrated = e + (self.kt / self.ki) * (u_sat - u_unsat)
-            # Need to define e, u_sat, and u_unsat
 
     def update(self, x_meas, x_ref, xdot=None):
         """Compute and return one control force, then save controller state.
@@ -124,7 +123,7 @@ class PIDController:
         Hint: Use np.clip(value, lower_bound, upper_bound) to limit the force.
         """
         error = x_ref - x_meas
-        if xdot != None:
+        if xdot is not None:
             v = xdot
         else:
             if self.x_prev == None:
@@ -132,7 +131,7 @@ class PIDController:
             else:
                 v = finite_difference(x_meas, self.x_prev, self.dt)
 
-            if self.filter != None:
+            if self.filter is not None:
                 v = self.filter.update(v)
 
         self.x_prev = x_meas
