@@ -21,9 +21,22 @@ def link_jacobian(theta, twists, home_pose, link_number):
     Returns:
         SymPy (6, 6) matrix.
     """
-    # TODO
-    raise NotImplementedError
-
+    n = twists.shape[1]
+    jacobian = sp.zeros(6, n)
+    for i in range(link_number):
+        if i + 1 < link_number:
+            forw_kin = forward_kinematics(twists[:, i + 1:link_number], theta[i + 1:link_number]) @ home_pose
+        else:
+            forw_kin = home_pose
+        R = forw_kin[:3, :3]
+        p = forw_kin[:3, 3]
+        R_inv = R.T
+        p_inv = -R_inv * p
+        forw_kin_inv = sp.eye(4)
+        forw_kin_inv[:3, :3] = R_inv
+        forw_kin_inv[:3, 3] = p_inv
+        jacobian[:, i] = adjoint(forw_kin_inv) * twists[:, i]
+    return jacobian
 
 def inertia_matrix(theta, twists, home_poses, link_inertias):
     """Build the symbolic joint-space inertia matrix M(theta).
@@ -38,9 +51,12 @@ def inertia_matrix(theta, twists, home_poses, link_inertias):
         SymPy matrix (6, 6).
         Use link_jacobian to get each link's body Jacobian.
     """
-    # TODO (a)
-    raise NotImplementedError
-
+    res = sp.zeros(6, 6)
+    for i in range(len(home_poses)):
+        jacobian = link_jacobian(theta, twists, home_poses[i], i + 1)
+        jacobian_t = jacobian.T
+        res = res + (jacobian_t @ link_inertias[i] @ jacobian)
+    return res
 
 def coriolis_matrix(M, q, qd):
     """Build the symbolic Coriolis and centripetal matrix.
@@ -57,9 +73,17 @@ def coriolis_matrix(M, q, qd):
     Hint, use M.diff(angle) to take the partial derivative of M
     with respect to a specific angle with sympy.
     """
-    # TODO (a)
-    raise NotImplementedError
-
+    n = M.shape[0]
+    res = sp.zeros(n, n)
+    for i in range(n):
+        for j in range(n):
+            curr = 0
+            for k in range(n):
+                C_ijk = 0.5 * (M[i, j].diff(q[k]) + M[i, k].diff(q[j]) - M[j, k].diff(q[i]))
+                curr += C_ijk * qd[k]
+            res[i, j] = curr
+    return res
+         
 
 def gravity_vector(theta, twists, home_poses, link_inertias, gravity):
     """Build the symbolic gravity compensation torque G(theta).
