@@ -98,9 +98,8 @@ def gravity_vector(theta, twists, home_poses, link_inertias, gravity):
     Returns:
         SymPy column (6, 1) of gravity compensation torques in N m.
     """
-    # TODO (a)
-    raise NotImplementedError
-
+    res = sp.zeros(6, 1)
+        
 
 def forward_dynamics(q, qd, tau, dynamics):
     """Return joint acceleration (6,) in rad/s^2 for the supplied plant.
@@ -138,9 +137,7 @@ def computed_torque(q, qd, q_ref, qd_ref, qdd_ref, kp, kd, dynamics):
     Returns:
         NumPy array (6,) of joint torques in N m.
     """
-    # TODO (c)
-    raise NotImplementedError
-
+    u = qdd_ref + (kd * (qd_ref - qd)) + (kp * (q_ref - q))
 
 def augmented_pd(q, qd, q_ref, qd_ref, qdd_ref, kp, kd, dynamics):
     """Add PD torque to the dynamics feedforward term.
