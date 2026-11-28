@@ -99,7 +99,12 @@ def gravity_vector(theta, twists, home_poses, link_inertias, gravity):
         SymPy column (6, 1) of gravity compensation torques in N m.
     """
     res = sp.zeros(6, 1)
-        
+    for i in range(6):
+        mass = link_inertias[i][3, 3]
+        curr = sp.eye(4)
+        for j in range(i + 1):
+
+    return res
 
 def forward_dynamics(q, qd, tau, dynamics):
     """Return joint acceleration (6,) in rad/s^2 for the supplied plant.
